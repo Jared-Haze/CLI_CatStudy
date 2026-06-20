@@ -4,11 +4,11 @@
 package org.example;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+       
+        System.out.println("Welcome to Cat Study!!! ('cat'egory study)");
+        System.out.println("Choose from the list of study methods below...");
+        System.out.println();
     }
 }
