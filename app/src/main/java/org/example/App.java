@@ -3,12 +3,36 @@
  */
 package org.example;
 
+import java.util.Scanner;
+
 public class App {
 
     public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
        
         System.out.println("Welcome to Cat Study!!! ('cat'egory study)");
-        System.out.println("Choose from the list of study methods below...");
-        System.out.println();
+        System.out.println("Choose which study category you'd like to do today...");
+        System.out.println("-----------------------------------------------------");
+        for (TermsListsPrompt list : DAL.showLists()) {
+            list.getTermsList();
+        }
+        /* 
+        System.out.println("1 : Jlink flags [terms list]");
+        System.out.println("2 : Jpackage flags [terms list]");
+        System.out.println("3 : test deck [syntax flashcards deck]");
+        System.out.println("4 : test deck too [syntax flashcards deck]");
+        */
+        
+        System.out.println("-----------------------------------------------------");
+        System.out.print("enter just the name, here: ");
+        String catChoice = scanner.nextLine();
+        System.out.println("you entered " + catChoice);
+
+        
+
+
+
+        scanner.close();
     }
 }
