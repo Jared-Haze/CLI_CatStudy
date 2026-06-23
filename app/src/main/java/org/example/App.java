@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 public class App {
 
+    public static int studyCatId = -1;
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -28,6 +30,7 @@ public class App {
 
         //Hero display : list of all study cats to choose from
         ArrayList<StudyCat> studyCats = new ArrayList<>();
+        
 
 
         //adding list of all terms list study cats to Hero display model.
@@ -46,22 +49,20 @@ public class App {
 
 
         System.out.print("enter just the name, here: ");
-        // checks if input is .equals to the string name of one of the study cat names
-        //  no -> "incorrect input" / "study cat _user_input_ doesn't exist"
-        //  yes -> runs study cycle for that study cat (which includes running getAnswers query inputting id# of chosen cat)
         String catChoice = scanner.nextLine();
         System.out.println("you entered " + catChoice);
 
-        boolean isStudyCat = isStudyCatChecker(studyCats, catChoice);
+        boolean isStudyCat = isStudyCatChecker(studyCats, catChoice, studyCatId);
         
 
         if (isStudyCat) {
-            //run it's cycle
             System.out.println("That study cat exists.");
             System.out.println("pretending to run cycle....");
-            int studyCatInput = 2;
-        
-            System.out.println(DAL.getListAnswers(studyCatInput));
+            //  yes -> runs study cycle for that study cat (which includes running getAnswers query inputting id# of chosen cat)
+
+            //method to see what the chosen study cat id# is (to input into DAL.getListAnswers(id#) to return answer entities).
+            System.out.println(studyCatId);
+            System.out.println(DAL.getListAnswers(studyCatId));
         } else {
             System.out.println("study cat " + catChoice + " doesn't exist.\nEnding program.");
         }
@@ -70,9 +71,10 @@ public class App {
         scanner.close();
     }
 
-    public static boolean isStudyCatChecker (ArrayList<StudyCat> studyCats, String catChoice) {
+    public static boolean isStudyCatChecker (ArrayList<StudyCat> studyCats, String catChoice, int studyCatId) {
         for (StudyCat studyCat : studyCats) {
             if (catChoice.strip().equalsIgnoreCase(studyCat.studyCatName)) {
+                App.studyCatId = studyCat.id;
                 return true;
             } 
         }
