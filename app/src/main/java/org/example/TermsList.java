@@ -5,19 +5,15 @@ import java.util.Scanner;
 
 public class TermsList extends StudyCat {
     public String itemType;
+    public String prompt;
     public String catType = "[terms list]";
 
-    TermsList(int id, String studyCatName, String question, String itemType) {
-        super(id, studyCatName, question);
+    TermsList(int id, String studyCatName, String prompt, String itemType) {
+        super(id, studyCatName);
         this.itemType = itemType;
+        this.prompt = prompt;
     }
 
-    /*
-    public String getSCString() {
-        String studyCatString = "- " + studyCatName + " |" + catType;
-        return studyCatString;
-    }
-    */
 
     public static void termsListStudyCatCycle(TermsList currentTermsList, Scanner scanner) {
         
@@ -39,7 +35,7 @@ public class TermsList extends StudyCat {
 
         //cycle through input and references 
         while (!answersReference.isEmpty()) {
-            System.out.println(currentTermsList.Prompt);
+            System.out.println(currentTermsList.prompt);
             String inputAnswer = scanner.nextLine().strip();
             
             if (answersReference.contains(inputAnswer)) {

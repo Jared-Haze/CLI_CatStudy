@@ -1,9 +1,5 @@
 Next step(s):
-- Make terms list study method in Cat study program & make dummy
-list to see if user input -> answers in database logic described below
-works.
-- Rewatch MySQL tutorial videos to review how foreign key searching
-works & to make database for CLI_CatStudy.
+- Make syntax flashcard study method in Cat study program 
 
 
 
@@ -16,30 +12,4 @@ Control flow(-ish)
 jpackage flag terms list, Java datastructure syntax flashcard deck, etc.)
 - user input which to practice (OR to input a new study info cat).
 
-
-🧠Terms list study method logic
-1 ~ query terms list table (select * from) & make object storing id,
-list name, question, & item_type. 
-2 ~ it'll display list name in cat selection. if you choose that 
-cat it'll run an inner join query between terms lists table & list 
-answers table ON(where) the chosen list id = the answers foreign key 
-(question_id) to return result set that includes all the correct list 
-answers. 
-3 ~ store answer varchar in a HashSet & compare user input to see if the
-answer references HashSet contains it. 
-
-
-🪑2 tables for terms lists (All questions & answers)
-Table 1: terms lists
-- id | INT | PRIMARY KEY, AUTO_INCREMENT
-- list_name | VARCHAR(255) | UNIQUE, NOT NULL
-- item_type | VARCHAR(255) 
-- question | VARCHAR(255) | UNIQUE, NOT NULL
-
-Table 2: list answers (all terms list answers across the whole program)
-- id | INT | PRIMARY KEY, AUTO_INCREMENT
-- answer | VARCHAR(255) | NOT NULL
-- question_id | INT | NOT NULL
-- PRIMARY KEY(id) 
-- FOREIGN KEY(question_id) REFERENCES terms lists(id)
 
