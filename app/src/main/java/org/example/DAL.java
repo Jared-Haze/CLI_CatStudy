@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
+import java.util.HashSet;
 
 import javax.naming.spi.DirStateFactory.Result;
 
@@ -29,23 +30,45 @@ public class DAL {
     */ 
 
 
-    public static ArrayDeque<TermsListsPrompt> showLists() {
-        ArrayDeque<TermsListsPrompt> termsLists = new ArrayDeque();
+    public static ArrayDeque<TermsList> showLists() {
+        ArrayDeque<TermsList> termsLists = new ArrayDeque();
 
         try(Connection conn = JDBC.getConnection()) {
-            String x = "SELECT * FROM termsListsPrompts ORDER BY id;";
-            PreparedStatement ps = conn.prepareStatement(x);
+            String sql = "SELECT * FROM termsListsPrompts ORDER BY id;";
+            PreparedStatement ps = conn.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
-            TermsListsPrompt tlp;
+            TermsList termsList;
             while (rs.next()) {
-                tlp = new TermsListsPrompt(rs.getInt("id"), rs.getString("list_name"), rs.getString("question"), rs.getString("item_type"));
-                termsLists.add(tlp);
+                termsList = new TermsList(rs.getInt("id"), rs.getString("list_name"), rs.getString("question"), rs.getString("item_type"));
+                termsLists.add(termsList);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return termsLists;
+    }
+
+    public static HashSet<TLAnswer> getListAnswers (int list_id) {
+        HashSet<TLAnswer> listAnswers = new HashSet<>();
+
+        try(Connection conn = JDBC.getConnection()) {
+            String sql = "SELECT * FROM termslistanswers WHERE question_id = ? ORDER BY id;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, list_id);
+
+            ResultSet rs = ps.executeQuery();
+            TLAnswer tlAnswer;
+            while(rs.next()) {
+                tlAnswer = new TLAnswer(rs.getString("answer"));
+                listAnswers.add(tlAnswer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listAnswers;
     }
 }

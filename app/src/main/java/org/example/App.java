@@ -4,6 +4,7 @@
 package org.example;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
@@ -24,10 +25,14 @@ public class App {
         Also later add option to add new study cat (-> select study method (terms list, syntax flashcard, etc.) 
         -> cycle/method for inputting study cat name & answers -> displaying to review input study cat + confirmation). 
         */
-        ArrayDeque<TermsListsPrompt> termsLists = DAL.showLists();
-        for (TermsListsPrompt list : termsLists) {
+        ArrayDeque<TermsList> termsLists = DAL.showLists();
+        for (TermsList list : termsLists) {
             list.getTermsList();
         }
+
+        ArrayList<String> studyCats = new ArrayList<>();
+        
+
         System.out.println("-----------------------------------------------------");
 
 
@@ -36,7 +41,11 @@ public class App {
         String catChoice = scanner.nextLine();
         System.out.println("you entered " + catChoice);
 
+
+
+        int studyCatInput = 2;
         
+        System.out.println(DAL.getListAnswers(studyCatInput));
 
 
 

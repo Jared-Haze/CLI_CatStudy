@@ -1,13 +1,13 @@
 package org.example;
 
-public class TermsListsPrompt {
+public class TermsList {
     public int id;
     public String listName;
     public String question;
     public String itemType;
     public String catType = "[terms list]";
 
-    TermsListsPrompt(int id, String listName, String question, String itemType) {
+    TermsList(int id, String listName, String question, String itemType) {
         this.id = id;
         this.listName = listName;
         this.question = question;
