@@ -20,7 +20,6 @@ public class App {
         System.out.println("Choose which study 'cat'egory you'd like to do today...");
 
 
-        System.out.println("-----------------------------------------------------");
         /* 
         Database "Hero" display -
         Later make into list of terms list names (;"jlink list") & syntax flashcard decks (;"Java data structures").
@@ -29,17 +28,16 @@ public class App {
         -> cycle/method for inputting study cat name & answers -> displaying to review input study cat + confirmation). 
         */
 
+        System.out.println("-----------------------------------------------------");
+        
         //Hero display : list of all study cats to choose from
         ArrayList<StudyCat> studyCats = new ArrayList<>();
         
-
-
         //adding list of all terms list study cats to Hero display model.
         ArrayDeque<TermsList> termsLists = DAL.showLists();
         for (TermsList list : termsLists) {
             studyCats.add(list);
         }
-
 
         //printing Hero display model
         for (StudyCat studyCat : studyCats) {
@@ -49,19 +47,25 @@ public class App {
         System.out.println("-----------------------------------------------------");
 
 
+        // user input choosing study cat
         System.out.print("enter just the name, here: ");
         String catChoice = scanner.nextLine();
         System.out.println("you entered " + catChoice);
 
+        //checks if input is a valid study cat & returns the current study cat entity chosen 
         StudyCat currentStudyCat = getCurrenStudyCat(studyCats, catChoice);
         
 
         if (isStudyCat) {
             System.out.println("That study cat exists.");
-
-            System.out.println(currentStudyCat.id);
+            
             //cycle for terms list study method chosen...
-            TermsList.termsListStudyCatCycle(currentStudyCat, scanner);
+            if (currentStudyCat instanceof TermsList) {
+                //downcast study cat
+                TermsList currentTermsList = (TermsList) currentStudyCat;
+                TermsList.termsListStudyCatCycle(currentTermsList, scanner);
+            }
+            
         } else {
             System.out.println("study cat " + catChoice + " doesn't exist.");
         }
@@ -75,8 +79,8 @@ public class App {
     public static StudyCat getCurrenStudyCat(ArrayList<StudyCat> studyCats, String catChoice) {
         for (StudyCat studyCat : studyCats) {
             if (catChoice.strip().equalsIgnoreCase(studyCat.studyCatName)) {
-                StudyCat currentStudyCat = new StudyCat(studyCat.id, studyCat.studyCatName, studyCat.Prompt);
                 App.isStudyCat = true;
+                StudyCat currentStudyCat = studyCat;
                 return currentStudyCat;
             }
         }
