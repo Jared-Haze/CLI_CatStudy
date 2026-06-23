@@ -1,5 +1,15 @@
 Next step(s):
-- Make syntax flashcard study method in Cat study program 
+- make flashcards left method for syntax flashcards deck study cats.
+- make early quit method for all study cats (prolly needs some polymorphism). 
+    - terms list : 
+        - add method to show what's left of list + what you've answered already.
+        - add method to show entire list from chosen hero display. 
+    - syntax flashcards : 
+        - just gives the option to quit early. 
+
+
+Later scope: 
+- add methods to input new study cats.
 
 
 
