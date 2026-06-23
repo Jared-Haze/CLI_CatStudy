@@ -1,20 +1,20 @@
 package org.example;
 
-public class TermsList {
-    public int id;
-    public String listName;
+public class TermsList extends StudyCat {
     public String question;
     public String itemType;
     public String catType = "[terms list]";
 
-    TermsList(int id, String listName, String question, String itemType) {
-        this.id = id;
-        this.listName = listName;
+    TermsList(int id, String studyCatName, String question, String itemType) {
+        super(id, studyCatName);
         this.question = question;
         this.itemType = itemType;
     }
 
-    public void getTermsList() {
-        System.out.println("- " + listName + " |" + catType);
+    /*
+    public String getSCString() {
+        String studyCatString = "- " + studyCatName + " |" + catType;
+        return studyCatString;
     }
+    */
 }

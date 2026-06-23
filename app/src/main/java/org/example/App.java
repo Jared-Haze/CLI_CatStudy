@@ -25,30 +25,57 @@ public class App {
         Also later add option to add new study cat (-> select study method (terms list, syntax flashcard, etc.) 
         -> cycle/method for inputting study cat name & answers -> displaying to review input study cat + confirmation). 
         */
+
+        //Hero display : list of all study cats to choose from
+        ArrayList<StudyCat> studyCats = new ArrayList<>();
+
+
+        //adding list of all terms list study cats to Hero display model.
         ArrayDeque<TermsList> termsLists = DAL.showLists();
         for (TermsList list : termsLists) {
-            list.getTermsList();
+            studyCats.add(list);
         }
 
-        ArrayList<String> studyCats = new ArrayList<>();
-        
+
+        //printing Hero display model
+        for (StudyCat studyCat : studyCats) {
+            System.out.println(studyCat.studyCatName);
+        }
 
         System.out.println("-----------------------------------------------------");
 
 
-
         System.out.print("enter just the name, here: ");
+        // checks if input is .equals to the string name of one of the study cat names
+        //  no -> "incorrect input" / "study cat _user_input_ doesn't exist"
+        //  yes -> runs study cycle for that study cat (which includes running getAnswers query inputting id# of chosen cat)
         String catChoice = scanner.nextLine();
         System.out.println("you entered " + catChoice);
 
-
-
-        int studyCatInput = 2;
+        boolean isStudyCat = isStudyCatChecker(studyCats, catChoice);
         
-        System.out.println(DAL.getListAnswers(studyCatInput));
 
+        if (isStudyCat) {
+            //run it's cycle
+            System.out.println("That study cat exists.");
+            System.out.println("pretending to run cycle....");
+            int studyCatInput = 2;
+        
+            System.out.println(DAL.getListAnswers(studyCatInput));
+        } else {
+            System.out.println("study cat " + catChoice + " doesn't exist.\nEnding program.");
+        }
 
 
         scanner.close();
+    }
+
+    public static boolean isStudyCatChecker (ArrayList<StudyCat> studyCats, String catChoice) {
+        for (StudyCat studyCat : studyCats) {
+            if (catChoice.strip().equalsIgnoreCase(studyCat.studyCatName)) {
+                return true;
+            } 
+        }
+        return false;
     }
 }
