@@ -9,7 +9,7 @@ public class TermsList extends StudyCat {
     public String catType = "[terms list]";
 
     TermsList(int id, String studyCatName, String prompt, String itemType) {
-        super(id, studyCatName);
+        super(id, studyCatName, "[terms list]");
         this.itemType = itemType;
         this.prompt = prompt;
     }

@@ -38,10 +38,15 @@ public class App {
         for (TermsList list : termsLists) {
             studyCats.add(list);
         }
+        //adding list of all deck study cats to choose from
+        ArrayDeque<SyntaxFlashcardsDeck> syntaxFlashcardsDecks = DAL.showDecks();
+        for (SyntaxFlashcardsDeck deck : syntaxFlashcardsDecks) {
+            studyCats.add(deck);
+        }
 
         //printing Hero display model
         for (StudyCat studyCat : studyCats) {
-            System.out.println(studyCat.studyCatName);
+            System.out.println(studyCat.studyCatName + " | " + studyCat.catType);
         }
 
         System.out.println("-----------------------------------------------------");

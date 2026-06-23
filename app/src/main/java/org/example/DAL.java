@@ -50,6 +50,26 @@ public class DAL {
         return termsLists;
     }
 
+    public static ArrayDeque<SyntaxFlashcardsDeck> showDecks() {
+        ArrayDeque<SyntaxFlashcardsDeck> decksList = new ArrayDeque<>();
+
+        try(Connection conn = JDBC.getConnection()) {
+            String sql = "SELECT * FROM syntaxFlashcardsDecks ORDER BY id;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+            SyntaxFlashcardsDeck deck;
+            while (rs.next()) {
+                deck = new SyntaxFlashcardsDeck(rs.getInt("id"), rs.getString("deck_name"));
+                decksList.add(deck);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return decksList;
+    }
+
     public static HashSet<TLAnswer> getListAnswers (int list_id) {
         HashSet<TLAnswer> listAnswers = new HashSet<>();
 
