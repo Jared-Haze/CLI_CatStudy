@@ -3,6 +3,7 @@
  */
 package org.example;
 
+import java.util.ArrayDeque;
 import java.util.Scanner;
 
 public class App {
@@ -11,20 +12,26 @@ public class App {
 
         Scanner scanner = new Scanner(System.in);
        
-        System.out.println("Welcome to Cat Study!!! ('cat'egory study)");
-        System.out.println("Choose which study category you'd like to do today...");
+        System.out.println("Welcome to Study Cat!!!");
+        System.out.println("Choose which study 'cat'egory you'd like to do today...");
+
+
         System.out.println("-----------------------------------------------------");
-        for (TermsListsPrompt list : DAL.showLists()) {
+        /* 
+        Database "Hero" display -
+        Later make into list of terms list names (;"jlink list") & syntax flashcard decks (;"Java data structures").
+        Just terms list for right now. 
+        Also later add option to add new study cat (-> select study method (terms list, syntax flashcard, etc.) 
+        -> cycle/method for inputting study cat name & answers -> displaying to review input study cat + confirmation). 
+        */
+        ArrayDeque<TermsListsPrompt> termsLists = DAL.showLists();
+        for (TermsListsPrompt list : termsLists) {
             list.getTermsList();
         }
-        /* 
-        System.out.println("1 : Jlink flags [terms list]");
-        System.out.println("2 : Jpackage flags [terms list]");
-        System.out.println("3 : test deck [syntax flashcards deck]");
-        System.out.println("4 : test deck too [syntax flashcards deck]");
-        */
-        
         System.out.println("-----------------------------------------------------");
+
+
+
         System.out.print("enter just the name, here: ");
         String catChoice = scanner.nextLine();
         System.out.println("you entered " + catChoice);
