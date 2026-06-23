@@ -69,6 +69,10 @@ public class App {
                 //downcast study cat
                 TermsList currentTermsList = (TermsList) currentStudyCat;
                 TermsList.termsListStudyCatCycle(currentTermsList, scanner);
+            } else if (currentStudyCat instanceof SyntaxFlashcardsDeck) {
+                //downcast study cat
+                SyntaxFlashcardsDeck currentSFDeck = (SyntaxFlashcardsDeck) currentStudyCat;
+                SyntaxFlashcardsDeck.syntaxFlashcardsStudyCatCycle(currentSFDeck.id, scanner);
             }
             
         } else {

@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.SequencedMap;
 
 import javax.naming.spi.DirStateFactory.Result;
 
@@ -90,5 +92,27 @@ public class DAL {
         }
 
         return listAnswers;
+    }
+
+    public static SequencedMap<String, String> getDeckAnswers(int deck_id) {
+        SequencedMap<String, String> flashcards = new LinkedHashMap<>();
+
+        try(Connection conn = JDBC.getConnection()) {
+            String sql = "SELECT * FROM syntaxFlashcards WHERE deck_id = ? ORDER BY id;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, deck_id);
+
+            ResultSet rs = ps.executeQuery();
+            SyntaxFlashcard flashcard;
+            while(rs.next()) {
+                flashcard = new SyntaxFlashcard(rs.getInt("id"), rs.getString("question"), rs.getString("answer"));
+                flashcards.put(flashcard.question, flashcard.answer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return flashcards;
     }
 }
