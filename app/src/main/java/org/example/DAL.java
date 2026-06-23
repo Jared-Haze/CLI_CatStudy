@@ -62,7 +62,7 @@ public class DAL {
             ResultSet rs = ps.executeQuery();
             TLAnswer tlAnswer;
             while(rs.next()) {
-                tlAnswer = new TLAnswer(rs.getString("answer"));
+                tlAnswer = new TLAnswer(rs.getInt("id"), rs.getString("answer"));
                 listAnswers.add(tlAnswer);
             }
         } catch (SQLException e) {

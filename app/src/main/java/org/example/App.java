@@ -5,11 +5,12 @@ package org.example;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class App {
 
-    public static int studyCatId = -1;
+    public static boolean isStudyCat = false;
 
     public static void main(String[] args) {
 
@@ -52,32 +53,33 @@ public class App {
         String catChoice = scanner.nextLine();
         System.out.println("you entered " + catChoice);
 
-        boolean isStudyCat = isStudyCatChecker(studyCats, catChoice, studyCatId);
+        StudyCat currentStudyCat = getCurrenStudyCat(studyCats, catChoice);
         
 
         if (isStudyCat) {
             System.out.println("That study cat exists.");
-            System.out.println("pretending to run cycle....");
-            //  yes -> runs study cycle for that study cat (which includes running getAnswers query inputting id# of chosen cat)
 
-            //method to see what the chosen study cat id# is (to input into DAL.getListAnswers(id#) to return answer entities).
-            System.out.println(studyCatId);
-            System.out.println(DAL.getListAnswers(studyCatId));
+            System.out.println(currentStudyCat.id);
+            //cycle for terms list study method chosen...
+            TermsList.termsListStudyCatCycle(currentStudyCat, scanner);
         } else {
-            System.out.println("study cat " + catChoice + " doesn't exist.\nEnding program.");
+            System.out.println("study cat " + catChoice + " doesn't exist.");
         }
 
 
         scanner.close();
+        System.out.println("Ending program.");
     }
 
-    public static boolean isStudyCatChecker (ArrayList<StudyCat> studyCats, String catChoice, int studyCatId) {
+
+    public static StudyCat getCurrenStudyCat(ArrayList<StudyCat> studyCats, String catChoice) {
         for (StudyCat studyCat : studyCats) {
             if (catChoice.strip().equalsIgnoreCase(studyCat.studyCatName)) {
-                App.studyCatId = studyCat.id;
-                return true;
-            } 
+                StudyCat currentStudyCat = new StudyCat(studyCat.id, studyCat.studyCatName, studyCat.Prompt);
+                App.isStudyCat = true;
+                return currentStudyCat;
+            }
         }
-        return false;
+        return null;
     }
 }

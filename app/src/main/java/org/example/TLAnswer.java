@@ -1,9 +1,8 @@
 package org.example;
 
-public class TLAnswer {
-    public String answer;
+public class TLAnswer extends StudyCatAnswer {
 
-    TLAnswer (String answer) {
-        this.answer = answer;
+    TLAnswer (int id, String answer) {
+        super(id, answer);
     }
 }
