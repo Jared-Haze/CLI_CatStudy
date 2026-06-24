@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.SequencedMap;
@@ -12,6 +11,9 @@ public class SyntaxFlashcardsDeck extends StudyCat{
         super(id, deck_name, "[syntax flashcards deck]");
     }
 
+
+
+    
     public static void syntaxFlashcardsStudyCatCycle(int currentSFDeck_id, Scanner scanner) {
         SequencedMap<String, String> flashcards = DAL.getDeckAnswers(currentSFDeck_id);
         
@@ -24,23 +26,11 @@ public class SyntaxFlashcardsDeck extends StudyCat{
             if (input.equals(card.getValue())) {
                 System.out.println("correct!" + cardsLeft(flashcards));
                 if (flashcards.isEmpty()) {break;}
-                System.out.print("continue? (y/n): ");
-                String quitInput = scanner.nextLine().strip();
-                if (quitInput.equals("n")) {
-                    return;
-                } else {
-                    System.out.println("");
-                }
+                StudyCatMethods.askContinue(scanner);
             } else {
                 flashcards.putLast(card.getKey(), card.getValue());
                 System.out.println("wrong answer..." + cardsLeft(flashcards) + "\nthe correct answer was: " + card.getValue());
-                System.out.print("continue? (y/n): ");
-                String quitInput = scanner.nextLine().strip();
-                if (quitInput.equals("n")) {
-                    return;
-                } else {
-                    System.out.println("");
-                }
+                StudyCatMethods.askContinue(scanner);
             }
         }
         System.out.println("congrats! you completed this deck!!!");
@@ -52,4 +42,7 @@ public class SyntaxFlashcardsDeck extends StudyCat{
         String itemsLeft = " " + size + " flashcard" + s + " left.";
         return itemsLeft;
     }
+
+
+    
 }

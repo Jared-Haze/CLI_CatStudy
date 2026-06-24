@@ -1,25 +1,9 @@
 Next step(s):
-- make flashcards left method for syntax flashcards deck study cats.
-- make early quit method for all study cats (prolly needs some polymorphism). 
-    - terms list : 
-        - add method to show what's left of list + what you've answered already.
-        - add method to show entire list from chosen hero display. 
-    - syntax flashcards : 
-        - just gives the option to quit early. 
+- add method to show entire terms list from chosen hero display study cat. 
 
 
 Later scope: 
 - add methods to input new study cats.
 
-
-
-------------------------------------------------------------------------------
-Outline 
-
-Control flow(-ish)
-- "Welcome to Cat study!"
-- display set of all study info categories (;jlink flag terms list, 
-jpackage flag terms list, Java datastructure syntax flashcard deck, etc.)
-- user input which to practice (OR to input a new study info cat).
 
 

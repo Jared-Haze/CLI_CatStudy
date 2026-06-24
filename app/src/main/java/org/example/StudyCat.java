@@ -1,6 +1,8 @@
 package org.example;
 
-public class StudyCat {
+import java.util.Scanner;
+
+public abstract class StudyCat {
     int id;
     String studyCatName;
     String catType;
@@ -10,4 +12,5 @@ public class StudyCat {
         this.studyCatName = studyCatName;
         this.catType = catType;
     }
+
 }
