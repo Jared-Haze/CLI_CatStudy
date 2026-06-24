@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.SequencedMap;
@@ -21,7 +22,8 @@ public class SyntaxFlashcardsDeck extends StudyCat{
             String input = scanner.nextLine().strip();
 
             if (input.equals(card.getValue())) {
-                System.out.println("correct!");
+                System.out.println("correct!" + cardsLeft(flashcards));
+                if (flashcards.isEmpty()) {break;}
                 System.out.print("continue? (y/n): ");
                 String quitInput = scanner.nextLine().strip();
                 if (quitInput.equals("n")) {
@@ -30,8 +32,8 @@ public class SyntaxFlashcardsDeck extends StudyCat{
                     System.out.println("");
                 }
             } else {
-                System.out.println("wrong answer\nthe correct answer was: " + card.getValue());
                 flashcards.putLast(card.getKey(), card.getValue());
+                System.out.println("wrong answer..." + cardsLeft(flashcards) + "\nthe correct answer was: " + card.getValue());
                 System.out.print("continue? (y/n): ");
                 String quitInput = scanner.nextLine().strip();
                 if (quitInput.equals("n")) {
@@ -42,5 +44,12 @@ public class SyntaxFlashcardsDeck extends StudyCat{
             }
         }
         System.out.println("congrats! you completed this deck!!!");
+    }
+
+    public static String cardsLeft(SequencedMap<String, String> flashcards) {
+        int size = flashcards.size();
+        String s = (size == 1) ? "" : "s";
+        String itemsLeft = " " + size + " flashcard" + s + " left.";
+        return itemsLeft;
     }
 }
