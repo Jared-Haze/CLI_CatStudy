@@ -1,9 +1,4 @@
 Next step(s):
-- create/input new study cats.
-- delete study cats.
-
-
- 
 
 
 Later scope: 
