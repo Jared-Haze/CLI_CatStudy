@@ -20,14 +20,6 @@ public class App {
         System.out.println("Choose which study 'cat'egory you'd like to do today...");
 
 
-        /* 
-        Database "Hero" display -
-        Later make into list of terms list names (;"jlink list") & syntax flashcard decks (;"Java data structures").
-        Just terms list for right now. 
-        Also later add option to add new study cat (-> select study method (terms list, syntax flashcard, etc.) 
-        -> cycle/method for inputting study cat name & answers -> displaying to review input study cat + confirmation). 
-        */
-
         System.out.println("-----------------------------------------------------");
         
         //Hero display : list of all study cats to choose from
@@ -53,9 +45,26 @@ public class App {
 
 
         // user input choosing study cat
-        System.out.print("enter just the name, here: ");
+        System.out.println("if you'd like to create/delete/update a study cat, type 'edit'");
+        System.out.print("enter just the name (or 'edit'), here: ");
         String catChoice = scanner.nextLine();
         System.out.println("you entered " + catChoice);
+
+        if (catChoice.strip().equalsIgnoreCase("edit")) {
+            System.out.print("Would you like to (create), (delete), or (update) a study cat - type here: ");
+            String editInput = scanner.nextLine().strip().toLowerCase();
+            
+            switch (editInput) {
+                case "create" -> {System.out.println("\"create\" placeholder function");/*method that chooses between DAL new Study cat options based on next user input */}
+                case "delete" -> {deleteCurrentStudyCat(studyCats, scanner);}
+                case "update" -> {System.out.println("\"update\" placeholder function. This method does not currently exist");}
+                default -> System.out.println(editInput + " is not a valid option");
+            }
+
+            scanner.close();
+            System.out.println("Ending program.");
+            System.exit(0);
+        }
 
         //checks if input is a valid study cat & returns the current study cat entity chosen 
         StudyCat currentStudyCat = getCurrenStudyCat(studyCats, catChoice);
@@ -91,8 +100,22 @@ public class App {
                 App.isStudyCat = true;
                 StudyCat currentStudyCat = studyCat;
                 return currentStudyCat;
+            } else {
+                App.isStudyCat = false;
             }
         }
         return null;
+    }
+
+    public static void deleteCurrentStudyCat(ArrayList<StudyCat> studyCats, Scanner scanner) {
+        System.out.println("\nwhich study cat would you like to delete? (enter name):");
+        String delCat = scanner.nextLine();
+        StudyCat currentStudyCat = getCurrenStudyCat(studyCats, delCat);
+
+        if (isStudyCat) {
+            DAL.deleteStudyCat(currentStudyCat);
+        } else {
+            System.out.println("study cat " + delCat + " doesn't exist.");
+        }
     }
 }

@@ -221,4 +221,44 @@ public class DAL {
 
         }   catch (SQLException e) {e.printStackTrace();}
     }
+
+    public static void deleteStudyCat(StudyCat currentStudyCat) {
+
+        try(Connection conn = JDBC.getConnection()) {
+            String cat_table;
+            String answers_table;
+            String foreign_key;
+            if (currentStudyCat instanceof TermsList) {
+                cat_table = "termslistsprompts";
+                answers_table = "termslistanswers";
+                foreign_key = "question_id";
+            } else if (currentStudyCat instanceof SyntaxFlashcardsDeck) {
+                cat_table = "syntaxflashcardsdecks";
+                answers_table = "syntaxflashcards";
+                foreign_key = "deck_id";
+            } else {
+                //shouldn't ever really happen though.
+                throw new SQLException("current study cat is not a study cat type.");
+            }
+
+            String deleteCat = "DELETE FROM " + cat_table + " WHERE id = ?;";
+            String deleteAnswers = "DELETE FROM " + answers_table + " WHERE " + foreign_key +  " = ?;";
+
+            PreparedStatement ps = conn.prepareStatement(deleteCat);
+            PreparedStatement ps2 = conn.prepareStatement(deleteAnswers);
+
+            ps.setInt(1, currentStudyCat.id);
+            ps2.setInt(1, currentStudyCat.id);
+
+            
+            ps2.executeUpdate();
+            ps.executeUpdate();
+            
+
+            System.out.println("you've successfully deleted Study Cat: " + currentStudyCat.studyCatName);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
