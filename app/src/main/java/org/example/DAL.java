@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Scanner;
 import java.util.SequencedMap;
 
 import javax.naming.spi.DirStateFactory.Result;
@@ -114,5 +115,61 @@ public class DAL {
         }
 
         return flashcards;
+    }
+
+    public static void newTermsList(Scanner scanner) {
+
+        try(Connection conn = JDBC.getConnection()) {
+            //input termslistprompt
+            String sql = "INSERT INTO termslistsprompts (list_name, question, item_type) VALUES (?, ?, ?);";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            //prompts and inputs
+            System.out.print("Enter the list name of the terms list: ");
+            String list_name = scanner.nextLine();
+            System.out.print("Enter the question/prompt for the terms list: ");
+            String question = scanner.nextLine();
+            System.out.print("Enter the item type of the list (; CLI flag, etc.): ");
+            String item_type = scanner.nextLine();
+
+            ps.setString(1, list_name);
+            ps.setString(2, question);
+            ps.setString(3, item_type);
+
+            ps.executeUpdate();
+
+            //get new termslistprompt id #
+            String getId = "SELECT id from termslistsprompts WHERE list_name = ?;";
+            PreparedStatement psId = conn.prepareStatement(getId);
+            psId.setString(1, list_name);
+            ResultSet newTermsListId = psId.executeQuery();
+            int newId = -1;
+            if (newTermsListId.next()) {
+                newId = newTermsListId.getInt("id");
+            } else {
+                //shouldn't ever really happen though.
+                throw new SQLException("No matching terms list found.");
+            }
+            //input answers
+            String sql2 = "INSERT INTO termslistanswers (answer, question_id) VALUES (?, ?);";
+            PreparedStatement ps2 = conn.prepareStatement(sql2);
+            System.out.print("Input the # of answer references: ");
+            int referencesAmount = scanner.nextInt();
+            scanner.nextLine();
+
+            //loop inputing answer references
+            for (int i = 0; i < referencesAmount; i++) {
+                //prompts and inputs (cycle)
+                System.out.print("Enter item/answer: ");
+                String tlanswer = scanner.nextLine();
+                ps2.setString(1, tlanswer);
+                ps2.setInt(2, newId);
+                ps2.executeUpdate();
+            }
+            System.out.println("you've successfully added a new terms list study cat!");
+            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
