@@ -166,10 +166,59 @@ public class DAL {
                 ps2.executeUpdate();
             }
             System.out.println("you've successfully added a new terms list study cat!");
-            
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void newSyntaxFlashcards(Scanner scanner) {
+
+        try(Connection conn = JDBC.getConnection()) {
+            String sql = "INSERT INTO syntaxflashcardsdecks (deck_name) VALUES (?);";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            System.out.print("Enter the name of this syntax flashcards deck: ");
+            String deck_name = scanner.nextLine();
+
+            ps.setString(1, deck_name);
+
+            ps.executeUpdate();
+
+            //get new syntax flashcards id #
+            String getId = "SELECT id from syntaxflashcardsdecks WHERE deck_name = ?;";
+            PreparedStatement psId = conn.prepareStatement(getId);
+            psId.setString(1, deck_name);
+            ResultSet newDeckId = psId.executeQuery();
+            int newId = -1;
+            if (newDeckId.next()) {
+                newId = newDeckId.getInt("id");
+            } else {
+                //shouldn't ever really happen though.
+                throw new SQLException("No matching syntax flashcards deck found.");
+            }
+
+            //input answers
+            String sql2 = "INSERT INTO syntaxflashcards (question, answer, deck_id) VALUES (?, ?, ?);";
+            PreparedStatement ps2 = conn.prepareStatement(sql2);
+            System.out.print("Input the # of flashcards: ");
+            int flashcardsAmount = scanner.nextInt();
+            scanner.nextLine();
+
+            //loop inputing flashcards
+            for (int i = 0; i < flashcardsAmount; i++) {
+                //prompts and inputs (cycle)
+                System.out.println("Enter question:");
+                String sfquestion = scanner.nextLine();
+                System.out.println("Enter answer (must be exact):");
+                String sfanswer = scanner.nextLine();
+                ps2.setString(1, sfquestion);
+                ps2.setString(2, sfanswer);
+                ps2.setInt(3, newId);
+                ps2.executeUpdate();
+            }
+            System.out.println("you've successfully added a new terms list study cat!");
+
+        }   catch (SQLException e) {e.printStackTrace();}
     }
 }
