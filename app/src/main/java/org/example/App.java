@@ -45,7 +45,7 @@ public class App {
 
 
         // user input choosing study cat
-        System.out.println("if you'd like to create/delete/update a study cat, type 'edit'");
+        System.out.println("~~~if you'd like to create/delete/update a study cat, type \"edit\"~~~");
         System.out.print("enter just the name (or 'edit'), here: ");
         String catChoice = scanner.nextLine();
         System.out.println("you entered " + catChoice);
