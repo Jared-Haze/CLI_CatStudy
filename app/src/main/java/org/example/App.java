@@ -55,7 +55,7 @@ public class App {
             String editInput = scanner.nextLine().strip().toLowerCase();
             
             switch (editInput) {
-                case "create" -> {System.out.println("\"create\" placeholder function");/*method that chooses between DAL new Study cat options based on next user input */}
+                case "create" -> {createStudyCat(scanner);}
                 case "delete" -> {deleteCurrentStudyCat(studyCats, scanner);}
                 case "update" -> {System.out.println("\"update\" placeholder function. This method does not currently exist");}
                 default -> System.out.println(editInput + " is not a valid option");
@@ -124,6 +124,16 @@ public class App {
             System.out.println("-----------------------------------------------------");
         } else {
             System.out.println("study cat " + delCat + " doesn't exist.");
+        }
+    }
+
+    public static void createStudyCat(Scanner scanner) {
+        System.out.print("Choose which study method type to create: \nA - Terms List\nB - Syntax Flashcards Deck\ntype here: ");
+        String input = scanner.nextLine();
+        switch (input) {
+            case "A", "a" -> DAL.newTermsList(scanner);
+            case "B", "b" -> DAL.newSyntaxFlashcards(scanner);
+            default -> System.out.println("invalid study method.");
         }
     }
 }
