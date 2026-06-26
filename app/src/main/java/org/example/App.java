@@ -114,6 +114,14 @@ public class App {
 
         if (isStudyCat) {
             DAL.deleteStudyCat(currentStudyCat);
+            studyCats.remove(currentStudyCat);
+            System.out.println("\nthis is the new list of study cats...");
+            System.out.println("-----------------------------------------------------");
+
+            for (StudyCat studyCat : studyCats) {
+                System.out.println(studyCat.studyCatName + " | " + studyCat.catType);
+            }
+            System.out.println("-----------------------------------------------------");
         } else {
             System.out.println("study cat " + delCat + " doesn't exist.");
         }
