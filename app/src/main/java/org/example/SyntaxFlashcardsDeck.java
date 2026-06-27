@@ -24,16 +24,16 @@ public class SyntaxFlashcardsDeck extends StudyCat{
             String input = scanner.nextLine().strip();
 
             if (input.equals(card.getValue())) {
-                System.out.println("correct!" + cardsLeft(flashcards));
+                System.out.println("✅correct!✅" + cardsLeft(flashcards));
                 if (flashcards.isEmpty()) {break;}
                 StudyCatMethods.askContinue(scanner);
             } else {
                 flashcards.putLast(card.getKey(), card.getValue());
-                System.out.println("wrong answer..." + cardsLeft(flashcards) + "\nthe correct answer was: " + card.getValue());
+                System.out.println("❌wrong answer❌..." + cardsLeft(flashcards) + "\nthe correct answer was: " + card.getValue());
                 StudyCatMethods.askContinue(scanner);
             }
         }
-        System.out.println("congrats! you completed this deck!!!");
+        System.out.println("😎congrats! you completed this deck!!!");
     }
 
     public static String cardsLeft(SequencedMap<String, String> flashcards) {

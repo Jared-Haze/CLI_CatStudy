@@ -42,17 +42,17 @@ public class TermsList extends StudyCat {
                 answersReference.remove(inputAnswer);
                 answeredList.add(inputAnswer);
                 
-                System.out.println("correct!" + itemsLeft(answersReference, currentTermsList.itemType) + "\n");
+                System.out.println("✅correct!✅" + itemsLeft(answersReference, currentTermsList.itemType) + "\n");
             } else if (answeredList.contains(inputAnswer)) {
-                System.out.println("you already got that one." + itemsLeft(answersReference, currentTermsList.itemType) + "\n");
+                System.out.println("🧠you already got that one." + itemsLeft(answersReference, currentTermsList.itemType) + "\n");
             } else {
-                System.out.println("wrong answer," + itemsLeft(answersReference, currentTermsList.itemType) + "\n");
+                System.out.println("❌wrong answer❌," + itemsLeft(answersReference, currentTermsList.itemType) + "\n");
             }
             if (answersReference.isEmpty()) {continue;}
             StudyCatMethods.askContinue(scanner, answeredList, answersReference);
             System.out.println("next guess...");
         }
-        System.out.println("seems like you gottem all. Good job!");
+        System.out.println("😎seems like you gottem all. Good job!");
     }
 
     public static String itemsLeft(HashSet<String> answersReference, String itemType) {
