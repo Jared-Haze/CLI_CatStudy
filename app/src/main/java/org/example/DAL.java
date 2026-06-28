@@ -261,4 +261,71 @@ public class DAL {
             e.printStackTrace();
         }
     }
+
+    public static void tlAddTerm(StudyCat currentStudyCat, Scanner scanner) {
+        try(Connection conn = JDBC.getConnection()) {
+            int currentID = currentStudyCat.id;
+            String sql = "INSERT INTO termslistanswers (answer, question_id) Values (?, ?);";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(2, currentID);
+
+            System.out.println("Enter new term:");
+            String newTerm = scanner.nextLine();
+            ps.setString(1, newTerm);
+            ps.executeUpdate();
+            System.out.println("New term successfully added to " + currentStudyCat.studyCatName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void tlRemoveTerm(StudyCat currentStudyCat, Scanner scanner) {
+        try(Connection conn = JDBC.getConnection()) {
+            int currentID = currentStudyCat.id;
+            String sql = "DELETE FROM termslistanswers WHERE answer = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            HashSet<TLAnswer> listAnswers = getListAnswers(currentID);
+
+            System.out.println("These are the current list terms...");
+
+            HashSet<String> answerStrings = new HashSet<>();
+            for (TLAnswer answer : listAnswers) {
+                System.out.println("> " + answer.answer);
+                answerStrings.add(answer.answer);
+            }
+
+            System.out.println("Enter the term to delete:");
+            String delTerm = scanner.nextLine().strip();
+            if (!answerStrings.contains(delTerm)) {
+                System.out.println("That term doesn't exist in the list...\ncancelling term removal.");
+                return;
+            }
+            ps.setString(1, delTerm);
+            ps.executeUpdate();
+            System.out.println("Term successfully removed from " + currentStudyCat.studyCatName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void tlUpdatePrompt(StudyCat currentStudyCat, Scanner scanner) {
+        try(Connection conn = JDBC.getConnection()) {
+            int currentID = currentStudyCat.id;
+            TermsList tl = (TermsList) currentStudyCat;
+            String sql = "UPDATE termslistsprompts SET question = ? WHERE id = ?;";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            System.out.println("~current prompt/question -> " + tl.prompt);
+            System.out.println("Enter new UPDATED prompt/question for terms list [" + currentStudyCat.studyCatName + "]: ");
+            
+            String prompt = scanner.nextLine();
+            ps.setString(1, prompt);
+            ps.setInt(2, currentID);
+            ps.executeUpdate();
+            System.out.println("prompt successfully change to:\n" + prompt);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
