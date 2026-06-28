@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.SequencedMap;
 
@@ -325,6 +327,87 @@ public class DAL {
             ps.executeUpdate();
             System.out.println("prompt successfully change to:\n" + prompt);
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sfAddCard(StudyCat currentStudyCat, Scanner scanner) {
+        try(Connection conn = JDBC.getConnection()) {
+            String sql = "INSERT INTO syntaxflashcards (question, answer, deck_id) VALUES (?, ?, ?);";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            SyntaxFlashcardsDeck sfCat = (SyntaxFlashcardsDeck) currentStudyCat;
+            int sfID = sfCat.id;
+
+            System.out.println("enter the question for the new flashcard:");
+            String question = scanner.nextLine();
+            System.out.println("enter the answer for the new flashcard:");
+            String answer = scanner.nextLine();
+
+            ps.setString(1, question);
+            ps.setString(2, answer);
+            ps.setInt(3, sfID);
+            ps.executeUpdate();
+            System.out.println("new flashcard succefully added to " + sfCat.studyCatName);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sfRemoveCard(StudyCat currentStudyCat, Scanner scanner) {
+        try(Connection conn = JDBC.getConnection()) {
+            SyntaxFlashcardsDeck deck = (SyntaxFlashcardsDeck) currentStudyCat;
+            int currentID = deck.id;
+            String sql = "DELETE FROM syntaxflashcards WHERE answer = ?;";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            SequencedMap<String, String> cards = getDeckAnswers(currentID);
+            System.out.println("These are the current decks cards...");
+
+            int i = 1;
+            for (Map.Entry<String, String> card : cards.entrySet()) {
+                System.out.println("question #" + i + ": " + card.getKey() + "\nanswer: " + card.getValue());
+                i++;
+            }
+            
+            int questionNum;
+            
+            while (true) {
+                try {
+                    System.out.println("Which card would you like to remove (type question # below):");
+                    questionNum = scanner.nextInt();
+                    scanner.nextLine();
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Please enter a whole number.");
+                    scanner.nextLine();
+                }
+            }
+
+            String chosenCardAnswer = null;
+            System.out.println("your # is " + questionNum);
+
+            int t = 1;
+            for (Map.Entry<String, String> card : cards.entrySet()) {
+                
+                if (t == questionNum) {
+                    chosenCardAnswer = card.getValue();
+                    break;
+                } 
+                t++;
+            }
+            if (chosenCardAnswer == null) {
+                System.out.println("Invalid input, cancelling card removal.");
+                return;
+            }
+
+            ps.setString(1, chosenCardAnswer);
+            ps.executeUpdate();
+            System.out.println("card successfully removed.");
+
+        } catch(SQLException e) {
             e.printStackTrace();
         }
     }

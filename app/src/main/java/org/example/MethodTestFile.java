@@ -8,16 +8,31 @@ public class MethodTestFile {
         System.out.println("test lol");
         Scanner scanner = new Scanner(System.in);
         
-
-        ArrayDeque<TermsList> termsList = DAL.showLists();
+        //TermsList tests
+        ArrayDeque<TermsList> termsLists = DAL.showLists();
 
         TermsList x = null;
 
-        for (TermsList term : termsList) {
+        for (TermsList term : termsLists) {
             x = term;
         }
 
-        DAL.tlUpdatePrompt(x, scanner);
+        //DAL.tlUpdatePrompt(x, scanner);
+
+//----------------------------------------------------------------------------------------------------
+
+        //Syntax Flashcards tests
+        ArrayDeque<SyntaxFlashcardsDeck> sfDecks = DAL.showDecks();
+
+        SyntaxFlashcardsDeck z = null;
+
+        for(SyntaxFlashcardsDeck deck : sfDecks) {
+            z = deck;
+        }
+
+        DAL.sfRemoveCard(z, scanner);
+
+
 
 
     }
