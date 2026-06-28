@@ -57,7 +57,7 @@ public class App {
             switch (editInput) {
                 case "create" -> {createStudyCat(scanner);}
                 case "delete" -> {deleteCurrentStudyCat(studyCats, scanner);}
-                case "update" -> {System.out.println("\"update\" placeholder function. This method does not currently exist");}
+                case "update" -> {updateStudyCat(studyCats, scanner);}
                 default -> System.out.println(editInput + " is not a valid option");
             }
 
@@ -67,7 +67,7 @@ public class App {
         }
 
         //checks if input is a valid study cat & returns the current study cat entity chosen 
-        StudyCat currentStudyCat = getCurrenStudyCat(studyCats, catChoice);
+        StudyCat currentStudyCat = getCurrentStudyCat(studyCats, catChoice);
         
 
         if (isStudyCat) {
@@ -94,7 +94,12 @@ public class App {
     }
 
 
-    public static StudyCat getCurrenStudyCat(ArrayList<StudyCat> studyCats, String catChoice) {
+
+
+
+
+
+    public static StudyCat getCurrentStudyCat(ArrayList<StudyCat> studyCats, String catChoice) {
         for (StudyCat studyCat : studyCats) {
             if (catChoice.strip().equalsIgnoreCase(studyCat.studyCatName)) {
                 App.isStudyCat = true;
@@ -110,7 +115,7 @@ public class App {
     public static void deleteCurrentStudyCat(ArrayList<StudyCat> studyCats, Scanner scanner) {
         System.out.println("\nwhich study cat would you like to delete? (enter name):");
         String delCat = scanner.nextLine();
-        StudyCat currentStudyCat = getCurrenStudyCat(studyCats, delCat);
+        StudyCat currentStudyCat = getCurrentStudyCat(studyCats, delCat);
 
         if (isStudyCat) {
             DAL.deleteStudyCat(currentStudyCat);
@@ -134,6 +139,35 @@ public class App {
             case "A", "a" -> DAL.newTermsList(scanner);
             case "B", "b" -> DAL.newSyntaxFlashcards(scanner);
             default -> System.out.println("invalid study method.");
+        }
+    }
+
+    public static void updateStudyCat(ArrayList<StudyCat> studyCats, Scanner scanner) {
+        System.out.println("\nwhich study cat would you like to update? (enter name):");
+        String updateCat = scanner.nextLine();
+        StudyCat currentStudyCat = getCurrentStudyCat(studyCats, updateCat);
+
+        if (isStudyCat) {
+            if (currentStudyCat instanceof TermsList) {
+                System.out.println("would you like to {change} the list prompt/question, {add} a term, or {remove} a term? (enter below):");
+                String input = scanner.nextLine().strip().toLowerCase();
+                switch(input) {
+                    case "change" -> DAL.tlUpdatePrompt(currentStudyCat, scanner);
+                    case "add" -> DAL.tlAddTerm(currentStudyCat, scanner);
+                    case "remove" -> DAL.tlRemoveTerm(currentStudyCat, scanner);
+                    default -> System.out.println("invalid option.");
+                }
+            } else if (currentStudyCat instanceof SyntaxFlashcardsDeck) {
+                System.out.println("would you like to {add} or {remove} a flashcard? (enter below):");
+                String input = scanner.nextLine().strip().toLowerCase();
+                switch (input) {
+                    case "add" -> DAL.sfAddCard(currentStudyCat, scanner);
+                    case "remove" -> DAL.sfRemoveCard(currentStudyCat, scanner);
+                    default -> System.out.println("invalid option.");
+                }
+            }
+        } else {
+            System.out.println("study cat " + updateCat + " doesn't exist.");
         }
     }
 }
