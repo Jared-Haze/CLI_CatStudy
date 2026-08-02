@@ -11,81 +11,92 @@ import java.util.Scanner;
 public class App {
 
     public static boolean isStudyCat = false;
+    public static boolean isRunning = true;
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
        
         System.out.println("Welcome to Study Cat!!!");
-        System.out.println("Choose which study 'cat'egory you'd like to do today...");
-
-
-        System.out.println("-----------------------------------------------------");
         
-        //Hero display : list of all study cats to choose from
-        ArrayList<StudyCat> studyCats = new ArrayList<>();
-        
-        //adding list of all terms list study cats to Hero display model.
-        ArrayDeque<TermsList> termsLists = DAL.showLists();
-        for (TermsList list : termsLists) {
-            studyCats.add(list);
-        }
-        //adding list of all deck study cats to choose from
-        ArrayDeque<SyntaxFlashcardsDeck> syntaxFlashcardsDecks = DAL.showDecks();
-        for (SyntaxFlashcardsDeck deck : syntaxFlashcardsDecks) {
-            studyCats.add(deck);
-        }
-
-        //printing Hero display model
-        for (StudyCat studyCat : studyCats) {
-            System.out.println(studyCat.studyCatName + " | " + studyCat.catType);
-        }
-
-        System.out.println("-----------------------------------------------------");
+        while(isRunning == true){
+            System.out.println("\nChoose which study 'cat'egory you'd like to do today...");
 
 
-        // user input choosing study cat
-        System.out.println("~~~if you'd like to create/delete/update a study cat, type \"edit\"~~~");
-        System.out.print("enter just the name (or 'edit'), here: ");
-        String catChoice = scanner.nextLine();
-        System.out.println("you entered " + catChoice);
-
-        if (catChoice.strip().equalsIgnoreCase("edit")) {
-            System.out.print("Would you like to (create), (delete), or (update) a study cat - type here: ");
-            String editInput = scanner.nextLine().strip().toLowerCase();
+            System.out.println("-----------------------------------------------------");
             
-            switch (editInput) {
-                case "create" -> {createStudyCat(scanner);}
-                case "delete" -> {deleteCurrentStudyCat(studyCats, scanner);}
-                case "update" -> {updateStudyCat(studyCats, scanner);}
-                default -> System.out.println(editInput + " is not a valid option");
+            //Hero display : list of all study cats to choose from
+            ArrayList<StudyCat> studyCats = new ArrayList<>();
+            
+            //adding list of all terms list study cats to Hero display model.
+            ArrayDeque<TermsList> termsLists = DAL.showLists();
+            for (TermsList list : termsLists) {
+                studyCats.add(list);
+            }
+            //adding list of all deck study cats to choose from
+            ArrayDeque<SyntaxFlashcardsDeck> syntaxFlashcardsDecks = DAL.showDecks();
+            for (SyntaxFlashcardsDeck deck : syntaxFlashcardsDecks) {
+                studyCats.add(deck);
             }
 
-            scanner.close();
-            System.out.println("Ending program.");
-            System.exit(0);
-        }
-
-        //checks if input is a valid study cat & returns the current study cat entity chosen 
-        StudyCat currentStudyCat = getCurrentStudyCat(studyCats, catChoice);
-        
-
-        if (isStudyCat) {
-            System.out.println("That study cat exists.");
-            
-            //cycle for terms list study method chosen...
-            if (currentStudyCat instanceof TermsList) {
-                //downcast study cat
-                TermsList currentTermsList = (TermsList) currentStudyCat;
-                TermsList.termsListStudyCatCycle(currentTermsList, scanner);
-            } else if (currentStudyCat instanceof SyntaxFlashcardsDeck) {
-                //downcast study cat
-                SyntaxFlashcardsDeck currentSFDeck = (SyntaxFlashcardsDeck) currentStudyCat;
-                SyntaxFlashcardsDeck.syntaxFlashcardsStudyCatCycle(currentSFDeck.id, scanner);
+            //printing Hero display model
+            for (StudyCat studyCat : studyCats) {
+                System.out.println(studyCat.studyCatName + " | " + studyCat.catType);
             }
+
+            System.out.println("-----------------------------------------------------");
+
+
+            // user input choosing study cat
+            System.out.println("~~~if you'd like to create/delete/update a study cat, type \"edit\"~~~");
+            System.out.println("~~~type \"Q\" to quit~~~");
+            System.out.print("enter just the name (or 'edit'), here: ");
+            String catChoice = scanner.nextLine();
+            System.out.println("you entered " + catChoice);
+
+            if(catChoice.strip().equalsIgnoreCase("Q")){
+                scanner.close();
+                System.out.println("Ending program.");
+                System.exit(0);
+            }
+
+            if (catChoice.strip().equalsIgnoreCase("edit")) {
+                System.out.print("Would you like to (create), (delete), or (update) a study cat - type here: ");
+                String editInput = scanner.nextLine().strip().toLowerCase();
+                
+                switch (editInput) {
+                    case "create" -> {createStudyCat(scanner);}
+                    case "delete" -> {deleteCurrentStudyCat(studyCats, scanner);}
+                    case "update" -> {updateStudyCat(studyCats, scanner);}
+                    default -> System.out.println(editInput + " is not a valid option");
+                }
+
+                scanner.close();
+                System.out.println("Ending program.");
+                System.exit(0);
+            }
+
+            //checks if input is a valid study cat & returns the current study cat entity chosen 
+            StudyCat currentStudyCat = getCurrentStudyCat(studyCats, catChoice);
             
-        } else {
-            System.out.println("study cat " + catChoice + " doesn't exist.");
+
+            if (isStudyCat) {
+                System.out.println("That study cat exists.");
+                
+                //cycle for terms list study method chosen...
+                if (currentStudyCat instanceof TermsList) {
+                    //downcast study cat
+                    TermsList currentTermsList = (TermsList) currentStudyCat;
+                    TermsList.termsListStudyCatCycle(currentTermsList, scanner);
+                } else if (currentStudyCat instanceof SyntaxFlashcardsDeck) {
+                    //downcast study cat
+                    SyntaxFlashcardsDeck currentSFDeck = (SyntaxFlashcardsDeck) currentStudyCat;
+                    SyntaxFlashcardsDeck.syntaxFlashcardsStudyCatCycle(currentSFDeck.id, scanner);
+                }
+                
+            } else {
+                System.out.println("study cat " + catChoice + " doesn't exist.");
+            }
         }
 
 
