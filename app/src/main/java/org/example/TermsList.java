@@ -49,7 +49,8 @@ public class TermsList extends StudyCat {
                 System.out.println("❌wrong answer❌," + itemsLeft(answersReference, currentTermsList.itemType) + "\n");
             }
             if (answersReference.isEmpty()) {continue;}
-            StudyCatMethods.askContinue(scanner, answeredList, answersReference);
+            boolean continueQ = StudyCatMethods.askContinue(scanner, answeredList, answersReference);
+            if(continueQ == false){return;}
             System.out.println("next guess...");
         }
         System.out.println("😎seems like you gottem all. Good job!");

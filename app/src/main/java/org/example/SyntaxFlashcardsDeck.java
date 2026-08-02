@@ -26,11 +26,13 @@ public class SyntaxFlashcardsDeck extends StudyCat{
             if (input.equals(card.getValue())) {
                 System.out.println("✅correct!✅" + cardsLeft(flashcards));
                 if (flashcards.isEmpty()) {break;}
-                StudyCatMethods.askContinue(scanner);
+                boolean continueQ = StudyCatMethods.askContinue(scanner);
+                if(continueQ == false){return;}
             } else {
                 flashcards.putLast(card.getKey(), card.getValue());
                 System.out.println("❌wrong answer❌..." + cardsLeft(flashcards) + "\nthe correct answer was: " + card.getValue());
-                StudyCatMethods.askContinue(scanner);
+                boolean continueQ = StudyCatMethods.askContinue(scanner);
+                if(continueQ == false){return;}
             }
         }
         System.out.println("😎congrats! you completed this deck!!!");

@@ -7,46 +7,46 @@ import java.util.Set;
 public interface StudyCatMethods {
 
 
-    public static void askContinue(Scanner scanner) {
+    public static boolean askContinue(Scanner scanner) {
         System.out.print("continue(yes/no)?: ");
         String input = scanner.nextLine().strip();
         if (Set.of("yes", "y", "").contains(input)) {
             System.out.println("Great!\n");
+            return true;
         } else if (input.equalsIgnoreCase("no")) {
-            System.out.println("you'll have to come back later...\nEnding program.");
-            scanner.close();
-            System.exit(0);
+            System.out.println("you'll have to come back later...");
+            return false;
         } else {
             System.out.println("confusing input, continuing study...\n");
+            return true;
         }
     }
 
-    public static void askContinue(Scanner scanner, HashSet<String> answeredList, HashSet<String> answersReference) {
+    public static boolean askContinue(Scanner scanner, HashSet<String> answeredList, HashSet<String> answersReference) {
         System.out.println("continue: (yes/no) | \nsee answered items: (W) | \nsee unanswered items(ends practice early): (L)");
         String input = scanner.nextLine().strip();
         switch (input) {
-            case "yes", "y", "" -> System.out.println("Great!\n");
+            case "yes", "y", "" -> {System.out.println("Great!\n"); return true;}
 
             case "no" -> {
-                System.out.println("you'll have to come back later...\nEnding program.");
-                scanner.close();
-                System.exit(0);
+                System.out.println("you'll have to come back later...");
+                return false;
             }
 
             case "w", "W" -> {
                 System.out.println("showing answerd items: ");
                 System.out.println(answeredList);
                 System.out.println("that's what you have so far, let's see you add some more...\n");
+                return true;
             }
 
             case "l", "L" -> {
                 System.out.println("seems like you sturggle with these terms: \n" + answersReference);
-                System.out.println("better keep practicing\nEnding program.");
-                scanner.close();
-                System.exit(0);
+                System.out.println("better keep practicing");
+                return false;
             }
 
-            default -> System.out.println("confusing input, continuing study...\n");
+            default -> {System.out.println("confusing input, continuing study...\n"); return true;}
         }
     }
 
